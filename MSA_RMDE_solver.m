@@ -84,6 +84,7 @@ condition_val_guess = (rho_A_hat + xi)^n_0_guess;
 
 max_iter = 1000;
 iter_count = 0;
+
 while norm(A_n0_guess, 'fro') >= condition_val_guess
     n_0_guess = n_0_guess + 1;
     A_n0_guess = A_n0_guess * A_hat;
