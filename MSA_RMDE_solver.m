@@ -1,8 +1,7 @@
-function [P_solution, t_nodes] = MSA_RMDE_solver(A, B, C, R, F, t0, tf, N, epsilon, l)
 % [P_solution, t_nodes] = MSA_RMDE_solver(A, B, C, R, F, t0, tf, N, epsilon, l)
 %
 % Solves the matrix Riccati differential equation (RMDE)
-% with a terminal condition using the Mmatrix Series Approximation (MSA).
+% with a terminal condition using the Matrix Series Approximation (MSA)
 %
 % The equation being solved is:
 %    -dP/dt = A'P + PA - P(B*R_inv*B')P + C'C
@@ -25,10 +24,6 @@ function [P_solution, t_nodes] = MSA_RMDE_solver(A, B, C, R, F, t0, tf, N, epsil
 %   P_solution : (n x n x N) Solution matrix P(t) at N time nodes.
 %                P_solution(:,:,j) is the solution at t_nodes(j).
 %   t_nodes    : (1 x N) Time nodes corresponding to the solution (from t0 to tf - delta_T).
-%
-% Remarks:
-%   This implementation is based on "Algorithm 4" and related equations (e.g., (23), (24)),
-%   solving via backward recurrence.
 %
 % Example:
 %   % (User should provide specific values for A, B, C, R, F, t0, tf, N, epsilon, l)
@@ -71,41 +66,27 @@ rho_A_hat = max(abs(eig(A_hat)));
 xi = (1 - rho_A_hat) / 2;
 beta = (rho_A_hat + xi)^2;
 
-norm_Q_hat_F = norm(Q_hat, 'fro');
+norm_Q_hat_F = norm(Q_hat);
 
 log_num = log(epsilon * (1 - beta) / norm_Q_hat_F);
 log_den = log(beta);
 n_guess = floor(log_num / log_den) - l;
-n =  n_guess;
-n_0_guess = floor(sqrt(n_guess)) + 1;
-A_n0_guess = A_hat^n_0_guess;
-A_n0_prime = A_n0_guess;
-condition_val_guess = (rho_A_hat + xi)^n_0_guess;
 
-max_iter = 1000;
-iter_count = 0;
+A_n_guess = A_hat^n_guess;
 
-while norm(A_n0_guess, 'fro') >= condition_val_guess
-    n_0_guess = n_0_guess + 1;
-    A_n0_guess = A_n0_guess * A_hat;
+condition_val_guess = (rho_A_hat + xi)^n_guess;
+
+while norm(A_n_guess) >= condition_val_guess
+    n_guess = n_guess + 1;
+    A_n_guess = A_n_guess * A_hat;
     condition_val_guess = condition_val_guess * (rho_A_hat + xi);
-    if n_0_guess > n_guess
-        n = n_0_guess;
-    else
-        n = n_guess;
-    end
-    iter_count = iter_count + 1;
-    if iter_count > max_iter
-        error("MSA_RMDE_solver:LoopError", "The while loop for determining 'n' exceeded %d iterations.", n_guess);
-    end
-
 end
 
-m_0_prime = floor(sqrt(n)) + 1;
-n_0_prime = floor(sqrt(n)) + 1;
-A_n0_prime = A_n0_prime * A^(floor(sqrt(n)) + 1 - floor(sqrt(n_guess)) - 1);
+m_0_prime = floor(sqrt(n_guess)) + 1;
+n_0_prime = floor(sqrt(n_guess)) + 1;
+A_n0_prime = A_hat^n_0_prime;
 
-S_q0 = Q_hat; % q_0_prime = 0; % As defined in the pseudo-code q_0' = 0
+S_q0 = Q_hat; 
 
 S_n0_standard = compute_lyap_sum(A_hat, Q_hat, n_0_prime);
 S_n0 = A_hat * S_n0_standard * A_hat_T;
@@ -137,5 +118,3 @@ for j = N:-1:1
 end
 
 end
-
-
