@@ -2,7 +2,7 @@ function [P_solution, t_nodes] = MSA_RMDE_solver(A, B, C, R, F, t0, tf, N, epsil
 % [P_solution, t_nodes] = MSA_RMDE_solver(A, B, C, R, F, t0, tf, N, epsilon, l)
 %
 % Solves the matrix Riccati differential equation (RMDE)
-% with a terminal condition using the Multi-Step Simplified Algorithm (MSA, "Algorithm 4").
+% with a terminal condition using the Mmatrix Series Approximation (MSA).
 %
 % The equation being solved is:
 %    -dP/dt = A'P + PA - P(B*R_inv*B')P + C'C
@@ -137,4 +137,5 @@ for j = N:-1:1
 end
 
 end
+
 
