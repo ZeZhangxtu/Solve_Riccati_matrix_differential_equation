@@ -2,7 +2,7 @@
 
 A MATLAB implementation of the **Matrix Series Approximation (MSA)** for solving the Riccati Matrix Differential Equation (RMDE) with a terminal condition. 
 
-This solver is designed for high-precision numerical integration of matrix differential equations arising in optimal control, specifically for Finite-Time Linear Quadratic Regulator (LQR) problems.
+This solver is designed for Riccati matrix differential equations arising in optimal control, specifically for Finite-Time Linear Quadratic Regulator (LQR) problems.
 
 ## 📝 Mathematical Formulation
 
