@@ -1,6 +1,6 @@
 # MSA Solver for Riccati Matrix Differential Equation
 
-A MATLAB implementation of the **Multi-Step Simplified Algorithm (MSA)** for solving the Riccati Matrix Differential Equation (RMDE) with a terminal condition. 
+A MATLAB implementation of the **Matrix Series Approximation (MSA)** for solving the Riccati Matrix Differential Equation (RMDE) with a terminal condition. 
 
 This solver is designed for high-precision numerical integration of matrix differential equations arising in optimal control, specifically for Finite-Time Linear Quadratic Regulator (LQR) problems.
 
@@ -24,12 +24,6 @@ Where:
 * $F$ is the terminal state weighting matrix.
 
 The algorithm integrates **backward** from $t_f$ to $t_0$.
-
-## 🚀 Features
-
-* **Algorithm**: Implements the **Multi-Step Simplified Algorithm (MSA)** (referenced as "Algorithm 4" in associated literature).
-* **Optimization**: Utilizes algebraic refinements and matrix shifts (via the Continuous Algebraic Riccati Equation solution $P^-$) to ensure numerical stability and convergence.
-* **Efficiency**: Computes solutions over a time grid $N$ using optimized matrix operations (Lyapunov sum computation).
 
 ## 📦 Installation & Requirements
 
